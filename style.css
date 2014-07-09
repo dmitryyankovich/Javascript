@@ -1,0 +1,24 @@
+body{margin: 0}
+
+.container{
+    width: 300px;
+    margin:0 auto;
+}
+
+.Calc {
+    border:1px solid gray;
+    margin:0;
+    padding:0;
+    text-align:center;
+}
+.Calc input{
+    border:1px solid gray;
+    width:30px;
+    margin:4px;
+}
+#equals{
+    width:80px;
+}
+#editField{
+    width:250px;
+}
