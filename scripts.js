@@ -1,186 +1,162 @@
-"use strict";
+function Calculator(form){
+    var self = this;
+    var fieldValue = form.FieldValue;
+    var current = 0;
+    var newNumberFlag = false;
+    var currentOperation = "";
+    var opCache = [];
 
-var calc = document.calculator;
-var current = 0;
-var newNumberFlag = false;
-var currentOperation = "";
-var opCache = [];
-
-var decimal = function Decimal (){
-    var currFieldValue = calc.FieldValue.value;
-    if (newNumberFlag)
-    {
-        currFieldValue = "0.";
-        newNumberFlag = false;
-    }
-    else
-    {
-        if (currFieldValue.indexOf(".") == -1) {
-            currFieldValue += ".";
-        }
-    }
-    calc.FieldValue.value = currFieldValue;
-};
-
-var negative = function Negative (){
-    calc.FieldValue.value =
-        parseFloat(calc.FieldValue.value) * -1;
-};
-
-var sqrt = function Sqrt(){
-    var oper=calc.FieldValue.value+'√';
-    var val = checkcache(oper);
-    if( !(typeof val == "undefined") ){
-        console.log("From cache");
-        calc.FieldValue.value = val;}
-    else {
-        console.log("Comp");
-        calc.FieldValue.value = parseFloat(Math.sqrt(calc.FieldValue.value));
-        addcache(oper,calc.FieldValue.value);
-    }
-};
-
-var sqr = function Sqr(){
-    var oper=calc.FieldValue.value+'^2';
-    var val = checkcache(oper);
-    if( !(typeof val == "undefined") ){
-        console.log("From cache");
-        calc.FieldValue.value = val;}
-    else {
-        console.log("Comp");
-        calc.FieldValue.value = parseFloat(Math.pow(calc.FieldValue.value,2));
-        addcache(oper,calc.FieldValue.value);
-    }
-};
-
-var pressnum = function NumPressed(Num){
-    if (newNumberFlag)
-    {
-        calc.FieldValue.value = Num;
-        newNumberFlag = false;
-    }
-    else
-    {
-        if (calc.FieldValue.value == "0")
-            calc.FieldValue.value = Num;
-        else
-            calc.FieldValue.value += Num;
-    }
-};
-
-var clearEntry = function ClearEntry (){
-    calc.FieldValue.value = "0";
-    newNumberFlag = true;
-};
-
-var clearAll = function Clear (){
-    current = 0;
-    currentOperation = "";
-    clearEntry();
-};
-
-var operation = function Operation (Op) {
-    var Readout = calc.FieldValue.value;
-    var oper = current + currentOperation + Readout;
-    if (newNumberFlag && currentOperation != "=") {
-        calc.FieldValue.value = current;
-    }
-    else {
-        if (Op == "=") {
-            var val = checkcache(oper);
-            if (!(typeof val == "undefined")) {
-                calc.FieldValue.value = val;
-                console.log("From cache");
-            }
-            else {
-                console.log("Computing");
-                newNumberFlag = true;
-                if ('+' == currentOperation)
-                    current += parseFloat(Readout);
-                else if ('-' == currentOperation)
-                    current -= parseFloat(Readout);
-                else if ('/' == currentOperation)
-                    current /= parseFloat(Readout);
-                else if ('*' == currentOperation)
-                    current *= parseFloat(Readout);
-                else
-                    current = parseFloat(Readout);
-                currentOperation = Op;
-                calc.FieldValue.value = current;
-                addcache(oper,current)
-            }
+    this.decimal = function Decimal() {
+        var currFieldValue =  fieldValue.value;
+        if (newNumberFlag) {
+            currFieldValue = "0.";
+            newNumberFlag = false;
         }
         else {
-            newNumberFlag = true;
-            if ('+' == currentOperation)
-                current += parseFloat(Readout);
-            else if ('-' == currentOperation)
-                current -= parseFloat(Readout);
-            else if ('/' == currentOperation)
-                current /= parseFloat(Readout);
-            else if ('*' == currentOperation)
-                current *= parseFloat(Readout);
-            else
-                current = parseFloat(Readout);
-            currentOperation = Op;
-            calc.FieldValue.value = current;
+            if (currFieldValue.indexOf(".") === -1) {
+                currFieldValue += ".";
+            }
         }
-    }
-};
-
-var checkcache = function checkCache(operation){
-    for(var i =0; i < opCache.length;i++){
-        if (opCache[i].oper === operation)
-        return opCache[i].val;
-    }
-};
-
-var addcache = function addCache(operation, value){
-    var k = {
-      oper : operation,
-      val : value
+        fieldValue.value = currFieldValue;
     };
-    opCache.push(k)
-};
 
-document.querySelector("#Clear").addEventListener('click',clearAll,false);
+    this.negative = function Negative() {
+        fieldValue.value = + fieldValue.value * -1;
+    };
 
-document.querySelector("#Clear_Entry").addEventListener('click',clearEntry,false);
+    this.sqrt = function Sqrt() {
+        var oper = fieldValue.value+'√';
+        var val = checkCache(oper);
+        if(!(typeof val === "undefined")) {
+            console.log("From cache");
+            fieldValue.value = val;
+        }
+        else {
+            console.log("Comp");
+            fieldValue.value = parseFloat(Math.sqrt( fieldValue.value));
+            addCache(oper, fieldValue.value);
+        }
+    };
 
-document.querySelector("#Sqrt").addEventListener('click', sqrt, false);
+    this.sqr = function Sqr() {
+        var oper = fieldValue.value+'^2';
+        var val = checkCache(oper);
+        if( !(typeof val === "undefined") ) {
+            console.log("From cache");
+            fieldValue.value = val;
+        }
+        else {
+            console.log("Comp");
+            fieldValue.value = parseFloat(Math.pow( fieldValue.value,2));
+            addCache(oper, fieldValue.value);
+        }
+    };
 
-document.querySelector("#Sqr").addEventListener('click', sqr, false);
+    this.pressNum = function numPressed(Num) {
+        if (newNumberFlag) {
+            fieldValue.value = Num;
+            newNumberFlag = false;
+        }
+        else {
+            if ( fieldValue.value === "0")
+                fieldValue.value = Num;
+            else
+                fieldValue.value += Num;
+        }
+    };
 
-document.querySelector('#zero').addEventListener('click',function(){pressnum(0)},false);
+    this.clearEntry = function clearEntry() {
+        fieldValue.value = "0";
+        newNumberFlag = true;
+    };
 
-document.querySelector("#one").addEventListener('click', function(){pressnum(1)},false);
+    this.clearAll = function clearAll() {
+        current = 0;
+        currentOperation = "";
+        self.clearEntry();
+    };
 
-document.querySelector("#two").addEventListener('click', function(){pressnum(2)},false);
+    var compute = function computed(Op) {
+        var Readout =  fieldValue.value;
+        newNumberFlag = true;
+        if ('+' === currentOperation)
+            current += +Readout;
+        else if ('-' === currentOperation)
+            current -= +Readout;
+        else if ('/' === currentOperation)
+            current /= +Readout;
+        else if ('*' === currentOperation)
+            current *= +Readout;
+        else
+            current = +Readout;
+        currentOperation = Op;
+        fieldValue.value = current;
+    };
 
-document.querySelector("#three").addEventListener('click', function(){pressnum(3)},false);
+    this.operation = function operations(Op) {
+        var Readout =  fieldValue.value;
+        var oper = current + currentOperation + Readout;
+        if (newNumberFlag && currentOperation != "=") {
+            fieldValue.value = current;
+        }
+        else {
+            if (Op === "=") {
+                var val = checkCache(oper);
+                if (!(typeof val === "undefined")) {
+                    fieldValue.value = val;
+                    console.log("From cache");
+                }
+                else {
+                    console.log("Computing");
+                    compute(Op);
+                    addCache(oper,current)
+                }
+            }
+            else {
+                compute(Op)
+            }
+        }
+    };
 
-document.querySelector("#four").addEventListener('click', function(){pressnum(4)},false);
+    var checkCache = function CheckCache(operation) {
+        for(var i = 0, len = opCache.length; i < len;i++) {
+            if (opCache[i].oper === operation)
+                return opCache[i].val;
+        }
+    };
 
-document.querySelector("#five").addEventListener('click', function(){pressnum(5)},false);
+    var addCache = function AddCache(operation, value) {
+        var k = {
+            oper : operation,
+            val : value
+        };
+        opCache.push(k)
+    };
+}
 
-document.querySelector("#six").addEventListener('click', function(){pressnum(6)},false);
+var cal = new Calculator(document.calculator);
 
-document.querySelector("#seven").addEventListener('click', function(){pressnum(7)},false);
+document.getElementById("Clear").addEventListener('click',cal.clearAll,false);
 
-document.querySelector("#eight").addEventListener('click', function(){pressnum(8)},false);
+document.getElementById("Clear_Entry").addEventListener('click',cal.clearEntry,false);
 
-document.querySelector("#nine").addEventListener('click', function(){pressnum(9)},false);
+document.getElementById("Sqrt").addEventListener('click', cal.sqrt, false);
 
-document.querySelector("#dec").addEventListener('click', decimal, false);
+document.getElementById("Sqr").addEventListener('click', cal.sqr, false);
 
-document.querySelector("#neg").addEventListener('click', negative, false);
+var elements = document.getElementsByClassName("buttons");
 
-document.querySelector("#plus").addEventListener('click', function(){operation('+')});
+for (var i = 0, len = elements.length; i < len; i++) {
+    elements[i].addEventListener('click', function(e) {
+        if (e.target.dataset.type === "number") {
+            cal.pressNum(e.target.dataset.value);
+        }
+        else if (e.target.dataset.type === "operation"){
+            cal.operation(e.target.dataset.value);
+        }
+    }, false)
+}
 
-document.querySelector("#multiply").addEventListener('click', function(){operation('*')});
+document.getElementById("Dec").addEventListener('click', cal.decimal, false);
 
-document.querySelector("#minus").addEventListener('click', function(){operation('-')});
-
-document.querySelector("#divide").addEventListener('click', function(){operation('/')});
-
-document.querySelector("#equals").addEventListener('click', function(){operation('=')});
+document.getElementById("Neg").addEventListener('click', cal.negative, false);
