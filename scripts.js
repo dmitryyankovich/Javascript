@@ -4,6 +4,7 @@ var calc = document.calculator;
 var current = 0;
 var newNumberFlag = false;
 var currentOperation = "";
+var opCache = [];
 
 var decimal = function Decimal (){
     var currFieldValue = calc.FieldValue.value;
@@ -27,11 +28,29 @@ var negative = function Negative (){
 };
 
 var sqrt = function Sqrt(){
-    calc.FieldValue.value = parseFloat(Math.sqrt(calc.FieldValue.value))
+    var oper=calc.FieldValue.value+'√';
+    var val = checkcache(oper);
+    if( !(typeof val == "undefined") ){
+        console.log("From cache");
+        calc.FieldValue.value = val;}
+    else {
+        console.log("Comp");
+        calc.FieldValue.value = parseFloat(Math.sqrt(calc.FieldValue.value));
+        addcache(oper,calc.FieldValue.value);
+    }
 };
 
 var sqr = function Sqr(){
-    calc.FieldValue.value = parseFloat(Math.pow(calc.FieldValue.value,2))
+    var oper=calc.FieldValue.value+'^2';
+    var val = checkcache(oper);
+    if( !(typeof val == "undefined") ){
+        console.log("From cache");
+        calc.FieldValue.value = val;}
+    else {
+        console.log("Comp");
+        calc.FieldValue.value = parseFloat(Math.pow(calc.FieldValue.value,2));
+        addcache(oper,calc.FieldValue.value);
+    }
 };
 
 var pressnum = function NumPressed(Num){
@@ -60,11 +79,36 @@ var clearAll = function Clear (){
     clearEntry();
 };
 
-var operation = function Operation (Op){
-    operation.cache = operation.cache || {};
-        var Readout = calc.FieldValue.value;
-        if (newNumberFlag && currentOperation != "=") {
-            calc.FieldValue.value = current;
+var operation = function Operation (Op) {
+    var Readout = calc.FieldValue.value;
+    var oper = current + currentOperation + Readout;
+    if (newNumberFlag && currentOperation != "=") {
+        calc.FieldValue.value = current;
+    }
+    else {
+        if (Op == "=") {
+            var val = checkcache(oper);
+            if (!(typeof val == "undefined")) {
+                calc.FieldValue.value = val;
+                console.log("From cache");
+            }
+            else {
+                console.log("Computing");
+                newNumberFlag = true;
+                if ('+' == currentOperation)
+                    current += parseFloat(Readout);
+                else if ('-' == currentOperation)
+                    current -= parseFloat(Readout);
+                else if ('/' == currentOperation)
+                    current /= parseFloat(Readout);
+                else if ('*' == currentOperation)
+                    current *= parseFloat(Readout);
+                else
+                    current = parseFloat(Readout);
+                currentOperation = Op;
+                calc.FieldValue.value = current;
+                addcache(oper,current)
+            }
         }
         else {
             newNumberFlag = true;
@@ -81,6 +125,22 @@ var operation = function Operation (Op){
             currentOperation = Op;
             calc.FieldValue.value = current;
         }
+    }
+};
+
+var checkcache = function checkCache(operation){
+    for(var i =0; i < opCache.length;i++){
+        if (opCache[i].oper === operation)
+        return opCache[i].val;
+    }
+};
+
+var addcache = function addCache(operation, value){
+    var k = {
+      oper : operation,
+      val : value
+    };
+    opCache.push(k)
 };
 
 document.querySelector("#Clear").addEventListener('click',clearAll,false);
