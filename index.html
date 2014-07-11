@@ -7,50 +7,55 @@
 </head>
 <body>
 <div class="container">
-<form name="calculator" action="">
-    <table class="Calc" cellpadding=0 cellspacing=0>
-        <tr>
-            <td colspan=5 align=middle>
-                <input id="editField" name="FieldValue" type="Text" size=28 value="0">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3"></td>
-            <td><input type="Button" value="C" id="Clear"/></td>
-            <td><input type="Button" value="CE" id="Clear_Entry"/></td>
-        </tr>
-        <tr>
-            <td><input class="buttons" data-type="number" data-value="7" type="Button" value="7"></td>
-            <td><input class="buttons" data-type="number" data-value="8" type="Button" value="8"></td>
-            <td><input class="buttons" data-type="number" data-value="9" type="Button" value="9"></td>
-            <td><input class="buttons" data-type="operation" data-value="+" type="Button" value="+"></td>
-            <td><input class="buttons" data-type="operation" data-value="*" type="Button" value="*"></td>
-        </tr>
-        <tr>
-            <td><input class="buttons" data-type="number" data-value="4" type="Button" value="4"></td>
-            <td><input class="buttons" data-type="number" data-value="5" type="Button" value="5"></td>
-            <td><input class="buttons" data-type="number" data-value="6" type="Button" value="6"></td>
-            <td><input class="buttons" data-type="operation" data-value="-" type="Button" value="-"></td>
-            <td><input class="buttons" data-type="operation" data-value="/" type="Button" value="/"></td>
-        </tr>
-        <tr>
-            <td><input class="buttons" data-type="number" data-value="1" type="Button" value="1"></td>
-            <td><input class="buttons" data-type="number" data-value="2" type="Button" value="2"></td>
-            <td><input class="buttons" data-type="number" data-value="3" type="Button" value="3"></td>
-            <td><input id="Sqrt" type="Button" value="√"></td>
-            <td><input type="Button" value="^2" id="Sqr"></td>
-        </tr>
-        <tr>
-            <td><input class="buttons" data-value="0" type="Button" value="0"></td>
-            <td><input id="Dec" type="Button" value="."></td>
-            <td><input id="Neg" type="button" value="+/-"></td>
-            <td colspan="2">
-                <input class="buttons" id="equals" data-type="operation" data-value="=" type="Button" value="=">
-            </td>
-        </tr>
-    </table>
-</form>
+    <form name="calculator" action="">
+        <table class="calc" cellpadding=0 cellspacing=0>
+            <tr>
+                <td colspan=5>
+                    <input id="editField" name="editField" type="text" value="0">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+                <td>
+                    <button class="button" data-type="action" data-action="clearAll" type="button">C</button>
+                </td>
+                <td>
+                    <button class="button" type="button" data-type="action" data-action="clearEntry">CE</button>
+                </td>
+            </tr>
+            <tr>
+                <td><button class="button" data-type="number" data-value="7" type="button">7</button></td>
+                <td><button class="button" data-type="number" data-value="8" type="button">8</button></td>
+                <td><button class="button" data-type="number" data-value="9" type="button">9</button></td>
+                <td><button class="button" data-type="operation" data-value="+" type="button">+</button></td>
+                <td><button class="button" data-type="operation" data-value="*" type="button">*</button></td>
+            </tr>
+            <tr>
+                <td><button class="button" data-type="number" data-value="4" type="button">4</button></td>
+                <td><button class="button" data-type="number" data-value="5" type="button">5</button></td>
+                <td><button class="button" data-type="number" data-value="6" type="button">6</button></td>
+                <td><button class="button" data-type="operation" data-value="-" type="button">-</button></td>
+                <td><button class="button" data-type="operation" data-value="/" type="button">/</button></td>
+            </tr>
+            <tr>
+                <td><button class="button" data-type="number" data-value="1" type="button">1</button></td>
+                <td><button class="button" data-type="number" data-value="2" type="button">2</button></td>
+                <td><button class="button" data-type="number" data-value="3" type="button">3</button></td>
+                <td><button class="button" data-type="action" data-action="sqrt" type="button">√</button></td>
+                <td><button class="button" data-type="action" data-action="sqr" type="button">^2</button></td>
+            </tr>
+            <tr>
+                <td><button class="button" data-type="number" data-value="0" type="button">0</button></td>
+                <td><button class="button" data-type="action" data-action="decimal" type="button" >.</button></td>
+                <td><button class="button" data-type="action" data-action="negative" type="button">+/-</button></td>
+                <td colspan="2">
+                    <button class="button" id="equals" data-type="operation" data-value="=" type="button">=</button>
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
-<script language="JavaScript" type="text/javascript" src="scripts.js"></script>
+<script src="calculator.js"></script>
+<script src="handlers.js"></script>
 </body>
 </html>
