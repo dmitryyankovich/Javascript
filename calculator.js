@@ -7,16 +7,16 @@ function Calculator(form) {
     var opCache = [];
 
     self.decimal = function () {
-        var currFieldValue = fieldValue.value;
+        var currentFieldValue = fieldValue.value;
         if (newNumberFlag) {
-            currFieldValue = "0.";
+            currentFieldValue = "0.";
             newNumberFlag = false;
         } else {
-            if (currFieldValue.indexOf(".") === -1) {
-                currFieldValue += ".";
+            if (currentFieldValue.indexOf(".") === -1) {
+                currentFieldValue += ".";
             }
         }
-        fieldValue.value = currFieldValue;
+        fieldValue.value = currentFieldValue;
     };
 
     self.negative = function () {
@@ -138,6 +138,7 @@ function Calculator(form) {
             operation: operation,
             value: value
         };
+        
         opCache.push(addingOperation)
     };
 }
